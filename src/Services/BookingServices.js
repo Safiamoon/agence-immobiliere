@@ -4,7 +4,7 @@ class BookingServices {
     getBookings(){
         return axios.get("https://app-booking-christ.herokuapp.com/api/booking")
     }
-    getCurrentBooking(id) {
+    getCurrentBookingDetail(id) {
         return axios.get(`https://app-booking-christ.herokuapp.com/api/booking/${id}`);
     }
 }

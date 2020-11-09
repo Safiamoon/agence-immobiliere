@@ -6,8 +6,12 @@ class ClientServices {
         return axios.get("https://app-booking-christ.herokuapp.com/api/client");
     }
 
-    getCurrentClient(id) {
-        return axios.get(`https://app-booking-christ.herokuapp.com/api/client/${id}`);
+    getCurrentClientDetail(id) {
+        return axios.get(`https://app-booking-christ.herokuapp.com/api/client/${id}`)
+    }
+
+    createClient() {
+        return axios.post(`https://app-booking-christ.herokuapp.com/api/client`);
     }
 }
 
