@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import {Link} from "react-router-dom";
+import React from 'react';
 import Navbar from '../Navbar';
 import ApptServices from '../Services/ApptServices';
-
+import axios from 'axios';
+// import { Redirect } from 'react-router-dom';
+// import { useHistory } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 class Appartements extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            // redirect:"/appartements",
             apartments:[],
             currentApartment:{
                 id:null,
@@ -15,19 +18,81 @@ class Appartements extends React.Component {
                 name: "",
                 rooms: []
             },
-            createApartment:{
+            AddApartment: {
                 number: "",
                 name: "",
-                rooms: [
-                    {
-                        number:"",
-                        area: "",
-                        price: ""
-                    }
-                ]
-            }
-        }
+                rooms: [] 
+            },
+            room: {
+                number:"",
+                area: "",
+                price: ""
+            },
+            rows: [""]
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleRoomChange = this.handleRoomChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.addRow = this.addRow.bind(this);
     }
+
+    // refreshPage() {
+    //     window.location.reload(false);
+    // }
+
+    handleInputChange(event) {
+        var apartmentToAdd = {...this.state.AddApartment}
+        const target = event.target;
+        const inputName = target.name;        
+        const inputValue = target.value;
+        apartmentToAdd[inputName] = inputValue;
+        this.setState({
+            AddApartment : apartmentToAdd
+        });        
+    }
+
+    handleRoomChange(event) {
+        const target = event.target;
+        const inputName = target.name;        
+        const inputValue = target.value;
+        var currentRoom = {...this.state.room};
+        currentRoom[inputName] = inputValue;
+
+        this.setState({
+            room: currentRoom
+        });        
+    }
+    handleSubmit(event) {
+
+        event.preventDefault();
+        const json = JSON.stringify(this.state.AddApartment);
+        console.log(json);
+        axios.post("https://app-booking-christ.herokuapp.com/api/apartment",this.state.AddApartment).then( (response) => {
+            console.log(response.data);
+            window.location.reload(false);  
+            // <Redirect to ={this.state.redirect}></Redirect>
+        });
+    }
+
+    addRow() {
+
+        var currentApartment = {...this.state.AddApartment};
+        var currentApartmentRooms = {...this.state.AddApartment.rooms};
+        var currentRoom = {...this.state.room};
+
+        console.log(currentApartment);
+        this.state.AddApartment.rooms.push(currentRoom);
+        //currentApartment.rooms  = [currentApartmentRooms, currentRoom];
+        console.log(currentApartment);
+
+        this.state.rows.push("x");
+
+        this.setState({
+            AddApartment : currentApartment
+        });
+
+    }
+
 
     componentDidMount() {
 
@@ -46,71 +111,88 @@ class Appartements extends React.Component {
         });
     }
 
-    // createApartment() {
-    //     ApptServices.createApartment().then( () => {
-    //         this.setState({createApartment : this.response})
-    //     });
-    // }
 
     render(){ 
     return (
         <>
         <Navbar />
         <h1 className = "text-center"> Apartments list </h1>
-        {/* Add apartment */}
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Apartement</button>
-        {/* Add apartment modal */}
-        {/* <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <button type="button" className="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Apartment</button>
+            
+            {/* Add apartment modal */}
+            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Add Apartment</h5>
+                    <h5 className="modal-title" id="exampleModalLabel">Add new Apartment</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div className="modal-body">
-                    <form>
-                    <div className="form-group">
-                        <label for="recipient-name" className="col-form-label">Apartment number: {this.state.createApartment.number}</label>
-                        <input type="text" className="form-control" id="recipient-name"/>
-                    </div>
-                    <div className="form-group">
-                        <label for="recipient-name" className="col-form-label">Apartment price: {this.state.createApartment.price}</label>
-                        <input type="text" className="form-control" id="recipient-name"/>
-                    </div>
-                    {
-                    this.state.createApartment.rooms.map(
-                        newApartmentRoom =>
-                        <div key = {newApartmentRoom.id}>
-                            <div className="form-group">
-                                <label for="recipient-name" className="col-form-label">Room ID: {newApartmentRoom.id}</label>
-                                <input type="text" className="form-control" id="recipient-name"/>
-                            </div>
-                            <div className="form-group">
-                                <label for="recipient-name" className="col-form-label">Room number: {newApartmentRoom.number}</label>
-                                <input type="text" className="form-control" id="recipient-name"/>
-                            </div>
-                            <div className="form-group">
-                                <label for="recipient-name" className="col-form-label">Room area: {newApartmentRoom.area}</label>
-                                <input type="text" className="form-control" id="recipient-name"/>
-                            </div>
-                            <div className="form-group">
-                                <label for="recipient-name" className="col-form-label">Room price: {newApartmentRoom.price}</label>
-                                <input type="text" className="form-control" id="recipient-name"/>
-                            </div>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Apartment Name :
+                        <div className="form-item">
+                            <input type="text" name="name" 
+                                className="form-control" placeholder="Name"
+                                inputValue={this.state.AddApartment.name} onChange={this.handleInputChange} required/>
                         </div>
-                    )
-                    }
-                    </form>
+                    </label>
+                    <label>
+                    Apartment Number :
+                        <div className="form-item">
+                            <input type="text" name="number" 
+                                className="form-control" placeholder="Number"
+                                inputValue={this.state.AddApartment.number} onChange={this.handleInputChange} required/>
+                        </div>
+                    </label>
+                    <label>
+                    Apartment Rooms :
+                        <table className = "table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td className="form-item">Number</td>
+                                            <td className="form-item">Area</td>
+                                            <td className="form-item">Price</td>
+                                            <td className="form-item">Add</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {this.state.rows.map(row => <tr>
+                                            <td><div className="form-item">
+                                                <input type="text" name="number" 
+                                                    className="form-control" placeholder="Number"
+                                                    inputValue={this.state.room.number} onChange={this.handleRoomChange} required/>
+                                            </div></td>
+                                            <td><div className="form-item">
+                                                <input type="text" name="area" 
+                                                    className="form-control" placeholder="Area"
+                                                    inputValue={this.state.room.area} onChange={this.handleRoomChange} required/>
+                                            </div></td>
+                                            <td><div className="form-item">
+                                                <input type="text" name="price" 
+                                                    className="form-control" placeholder="Price"
+                                                    inputValue={this.state.room.price} onChange={this.handleRoomChange} required/>
+                                            </div></td>
+                                            <td>
+                                            <button type="button" className="btn btn-block btn-primary" onClick={this.addRow} >Add Room</button>
+                                            </td>
+                                        </tr>)}
+                                    </tbody>
+                                </table>
+                            </label>
+                        <div className="form-item">
+                
+                    <button type="submit" className="btn btn-block btn-primary">
+                        Add Apartment
+                    </button>
                 </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" className="btn btn-primary" onClick={this.createApartment(this.state.createApartment.id)}>Save changes</button>
+            </form>  
                 </div>
                 </div>
             </div>
-        </div> */}
+            </div>
 
         <hr></hr>
 
@@ -122,6 +204,7 @@ class Appartements extends React.Component {
                     <td> Apartment Number </td>
                     <td> Apartment Name </td>
                     <td> More details </td>
+                    {/* <td> Add room </td> */}
                 </tr>
             </thead>
             <tbody>
@@ -132,7 +215,8 @@ class Appartements extends React.Component {
                             <td> {apartment.id} </td>
                             <td> {apartment.number} </td>
                             <td> {apartment.name} </td>
-                            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>this.getApartment(apartment.id)}>See</button></td>
+                            <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>this.getApartment(apartment.id)}>See</button></td>
+                            {/* <td><button type="button" className="btn btn-success" data-toggle="modal" data-target="#roomModal" onClick={()=>this.getApartment(apartment.id)}>Add</button></td> */}
                         </tr>
                     )
                 }
@@ -140,7 +224,7 @@ class Appartements extends React.Component {
         </table>
 
         {/* See details modal  */}
-        <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -172,9 +256,47 @@ class Appartements extends React.Component {
                 </div>
             </div>
         </div>
+
+        {/* Add room
+        <div className="modal fade" id="roomModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Add new Apartment</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div className="modal-body">
+                    <form onSubmit={this.handleSubmit}>
+            {this.state.rows.map(row => <tr>
+                                            <td><div className="form-item">
+                                                <input type="text" name="number" 
+                                                    className="form-control" placeholder="Number"
+                                                    inputValue={this.state.room.number} onChange={this.handleRoomChange} required/>
+                                            </div></td>
+                                            <td><div className="form-item">
+                                                <input type="text" name="area" 
+                                                    className="form-control" placeholder="Area"
+                                                    inputValue={this.state.room.area} onChange={this.handleRoomChange} required/>
+                                            </div></td>
+                                            <td><div className="form-item">
+                                                <input type="text" name="price" 
+                                                    className="form-control" placeholder="Price"
+                                                    inputValue={this.state.room.price} onChange={this.handleRoomChange} required/>
+                                            </div></td>
+                                        </tr>)}
+                                        <button type="submit" className="btn btn-block btn-primary">
+                                            Add Apartment
+                                        </button>
+                                    </form>
+                </div>
+                </div>
+            </div>
+            </div> */}
         </>
     )
 }
 }
 
-export default Appartements;
+export default withRouter(Appartements);

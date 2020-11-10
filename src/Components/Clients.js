@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import React from 'react';
 import Navbar from '../Navbar';
 import ClientServices from '../Services/ClientServices';
 
@@ -19,18 +20,47 @@ class Appartements extends React.Component {
                 
             },
 
-            createClient: {
+            addClient: {
                 
                 firstName: "",
                 lastName : "",
-                email: "",
                 phone: "",
                 nationality : "",
                 birthDate : ""
             
         }
-        }
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    
+    handleInputChange(event) {
+        var clientToAdd = {...this.state.addClient}
+        const target = event.target;
+        const inputName = target.name;        
+        const inputValue = target.value;
+        clientToAdd[inputName] = inputValue;
+        this.setState({
+            addClient : clientToAdd
+        });        
+    }
+
+    handleSubmit(event) {
+
+        event.preventDefault();
+        const json = JSON.stringify(this.state.addClient);
+        console.log(json);
+        axios.post("https://app-booking-christ.herokuapp.com/api/client",this.state.addClient).then( (response) => {
+            console.log(response.data);
+            this.props.history.push("/clients");   
+            // <Redirect to ={this.state.redirect}></Redirect>
+        });
+    }
+
+    // refreshPage() {
+    //     window.location.reload(false);
+    // }
 
     componentDidMount() {
 
@@ -47,11 +77,7 @@ class Appartements extends React.Component {
         });
     }
 
-    // createClient() {
-    //     ClientServices.createClient().then( () => {
-    //         this.setState({createClient : this.response.data.client})
-    //     });
-    // }
+
 
     render(){ 
     return (
@@ -60,7 +86,7 @@ class Appartements extends React.Component {
         <h1 className = "text-center" > Clients list </h1>
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Client</button>
         {/* Add client modal */}
-        {/* <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">
@@ -70,36 +96,57 @@ class Appartements extends React.Component {
                     </button>
                 </div>
                 <div className="modal-body">
-                    <form>
-                        <div className="form-group">
-                            <label for="recipient-name" className="col-form-label">Client firstname: {this.state.createClient.firstName}</label>
-                            <input type="text" className="form-control" id="recipient-name"/>
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Client firstname :
+                            <div className="form-item">
+                                <input type="text" name="firstName" 
+                                    className="form-control" placeholder="FirstName"
+                                    inputValue={this.state.addClient.firstName} onChange={this.handleInputChange} required/>
+                            </div>
+                        </label>
+                        <label>
+                        Client lastname :
+                            <div className="form-item">
+                                <input type="text" name="lastName" 
+                                    className="form-control" placeholder="LastName"
+                                    inputValue={this.state.addClient.lastName} onChange={this.handleInputChange} required/>
+                            </div>
+                        </label>
+                        <label>
+                        Client phone :
+                            <div className="form-item">
+                                <input type="text" name="phone" 
+                                    className="form-control" placeholder="Phone"
+                                    inputValue={this.state.addClient.phone} onChange={this.handleInputChange} required/>
+                            </div>
+                        </label>
+                        <label>
+                        Client nationality :
+                            <div className="form-item">
+                                <input type="text" name="nationality" 
+                                    className="form-control" placeholder="Nationality"
+                                    inputValue={this.state.addClient.nationality} onChange={this.handleInputChange} required/>
+                            </div>
+                        </label>
+                        <label>
+                        Client birthdate :
+                            <div className="form-item">
+                                <input type="text" name="birthDate" 
+                                    className="form-control" placeholder="BirthDate"
+                                    inputValue={this.state.addClient.birthdate} onChange={this.handleInputChange} required/>
+                            </div>
+                        </label>
+                        <div className="form-item">
+                            <button type="submit" className="btn btn-block btn-primary">
+                                Add Client
+                            </button>
                         </div>
-                        <div className="form-group">
-                            <label for="recipient-name" className="col-form-label">Client lastname: {this.state.createClient.lastName}</label>
-                            <input type="text" className="form-control" id="recipient-name"/>
-                        </div>
-                        <div className="form-group">
-                            <label for="recipient-name" className="col-form-label">Client phone: {this.state.createClient.phone}</label>
-                            <input type="text" className="form-control" id="recipient-name"/>
-                        </div>
-                        <div className="form-group">
-                            <label for="recipient-name" className="col-form-label">Client nationality: {this.state.createClient.nationality}</label>
-                            <input type="text" className="form-control" id="recipient-name"/>
-                        </div>     
-                        <div className="form-group">
-                            <label for="recipient-name" className="col-form-label">Client birthdate: {this.state.createClient.birthDate}</label>
-                            <input type="text" className="form-control" id="recipient-name"/>
-                        </div>
-                    </form>
-                </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" className="btn btn-primary" onClick={this.createClient(this.state.createClient.id)}>Save changes</button>
+                    </form>  
                 </div>
                 </div>
             </div>
-        </div> */}
+        </div>
 
         <hr></hr>
 
@@ -112,7 +159,7 @@ class Appartements extends React.Component {
                             <td> Client Phone</td>
                             <td> Client Nationality </td>
                             <td> Client Birth Date </td>
-                            <td> Edit Client </td>
+                            <td> More details </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,7 +173,7 @@ class Appartements extends React.Component {
                                     <td> {client.phone} </td>
                                     <td> {client.nationality} </td>
                                     <td> {client.birthDate} </td>
-                                    <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>this.getClient(client.id)}>See</button></td>
+                                    <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>this.getClient(client.id)}>See</button></td>
                                 </tr>
                             )
                         }
@@ -134,7 +181,7 @@ class Appartements extends React.Component {
                 </table>
 
                 {/* See details modal */}
-                <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                         <div className="modal-header">
@@ -149,7 +196,7 @@ class Appartements extends React.Component {
                             <h5> Phone :{this.state.currentClient.phone}</h5>
                             <h5> Nationality : {this.state.currentClient.nationality}</h5>
                             <h5> BirthDate : {this.state.currentClient.birthDate}</h5>
-                            <h5>Bookings :</h5>
+                            <h5> Bookings :</h5>
                             <hr></hr>
                             {
                             this.state.currentClient.bookings.map(

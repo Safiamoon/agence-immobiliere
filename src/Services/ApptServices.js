@@ -9,8 +9,8 @@ class ApptServices {
         return axios.get("https://app-booking-christ.herokuapp.com/api/apartment"+"/"+id);
     }
 
-    createApartment() {
-        return axios.post(`https://app-booking-christ.herokuapp.com/api/apartment`);
+    createApartment(addApartment) {
+        return axios.post(`https://app-booking-christ.herokuapp.com/api/apartment/${addApartment}`);
     }
 }
 

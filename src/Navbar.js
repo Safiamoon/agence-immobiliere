@@ -13,7 +13,7 @@ export default class Navbar extends Component{
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                        <Link className="nav-item nav-link active" to='/'>Home <span class="sr-only">(current)</span></Link>
+                        <Link className="nav-item nav-link active" to='/'>Accueil <span className="sr-only">(current)</span></Link>
                         <Link className="nav-item nav-link" to='/appartements'>Appartements</Link>
                         <Link className="nav-item nav-link" to='/clients'>Clients</Link>
                         <Link className="nav-item nav-link" to='/reservation'>Reservation</Link>
