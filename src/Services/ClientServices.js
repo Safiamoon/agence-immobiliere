@@ -10,9 +10,6 @@ class ClientServices {
         return axios.get(`https://app-booking-christ.herokuapp.com/api/client/${id}`)
     }
 
-    createClient(addClient) {
-        return axios.post(`https://app-booking-christ.herokuapp.com/api/client/${addClient}`);
-    }
 }
 
 export default new ClientServices();

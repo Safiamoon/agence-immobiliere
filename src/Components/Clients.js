@@ -28,13 +28,14 @@ class Appartements extends React.Component {
                 nationality : "",
                 birthDate : ""
             
-        }
+            }
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     
+    //Add new client  
     handleInputChange(event) {
         var clientToAdd = {...this.state.addClient}
         const target = event.target;
@@ -53,24 +54,20 @@ class Appartements extends React.Component {
         console.log(json);
         axios.post("https://app-booking-christ.herokuapp.com/api/client",this.state.addClient).then( (response) => {
             console.log(response.data);
-            this.props.history.push("/clients");   
+            window.location.reload(false);   
             // <Redirect to ={this.state.redirect}></Redirect>
         });
     }
 
-    // refreshPage() {
-    //     window.location.reload(false);
-    // }
-
     componentDidMount() {
-
+        //Get api clients
         ClientServices.getClients().then( (response) => {
             this.setState( { clients: response.data.clients } )
         });
 
     }
 
-    
+    //See current client details
     getClient(id) {
         ClientServices.getCurrentClientDetail(id).then( (response) => {
             this.setState({currentClient : response.data.client});
@@ -83,7 +80,7 @@ class Appartements extends React.Component {
     return (
         <>
         <Navbar />
-        <h1 className = "text-center" > Clients list </h1>
+        <h1 className = "text-center" > CLIENTS LIST </h1>
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Client</button>
         {/* Add client modal */}
         <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
