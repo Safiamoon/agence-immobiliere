@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import firstImage from '../Images/9.jpg';
+import firstImage from '../Images/1.jpg';
 import * as CONSTANTS from "../constants";
 import Navbar from '../Navbar';
 
