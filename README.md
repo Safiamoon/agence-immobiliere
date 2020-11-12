@@ -13,10 +13,10 @@ Application will start at http://localhost:3000.
 
 Preview
 ========
-![Screenshot1](/screenshots/screenshot1.png)
-![Screenshot2](/screenshots/screenshot2.png)
-![Screenshot3](/screenshots/screenshot3.png)
-![Screenshot4](/screenshots/screenshot4.png)
+![Screenshot1](/screenshots/screenshot1.PNG)
+![Screenshot2](/screenshots/screenshot2.PNG)
+![Screenshot3](/screenshots/screenshot3.PNG)
+![Screenshot4](/screenshots/screenshot4.PNG)
 
 ## Technnologies & libraries: 
 ========
