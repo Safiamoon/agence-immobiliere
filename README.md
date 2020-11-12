@@ -1,3 +1,27 @@
+# REACT CRUD APPLICATION
+
+## To use this project : 
+
+- clone the repository 
+- run `yarn install`
+- serve it locally by running `yarn start`
+
+## Technnologies & libraries: 
+
+- HTML/CSS
+- ReactJs
+- Bootstrap
+
+## API : 
+
+- Booking API
+
+## End to end testing : 
+
+- Cypress
+
+____
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
