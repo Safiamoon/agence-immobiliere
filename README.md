@@ -1,23 +1,35 @@
 # REACT CRUD APPLICATION
+==================================
 
-## To use this project : 
 
-- clone the repository 
-- run `yarn install`
-- serve it locally by running `yarn start`
+## How to run
+========
+1. Clone the project from git.
+2. Go to 'CRUD_ReactJS' directory.
+3. Run `yarn install`.
+4. Run `yarn start`.
+
+Application will start at http://localhost:3000.
+
+Preview
+========
+![Screenshot1](/screenshots/screenshot1.png)
+![Screenshot2](/screenshots/screenshot2.png)
+![Screenshot3](/screenshots/screenshot3.png)
+![Screenshot4](/screenshots/screenshot4.png)
 
 ## Technnologies & libraries: 
-
+========
 - HTML/CSS
 - ReactJs
 - Bootstrap
 
 ## API : 
-
+========
 - Booking API
 
 ## End to end testing : 
-
+========
 - Cypress
 
 ____
