@@ -70,9 +70,12 @@ class Appartements extends React.Component {
         event.preventDefault();
         const json = JSON.stringify(this.state.apartmentRoom);
         console.log(json);
-        axios.post("https://app-booking-christ.herokuapp.com/api/room",this.state.apartmentRoom).then( (response) => {
+        axios.post("https://app-booking-christ.herokuapp.com/api/room",this.state.apartmentRoom)
+        .then( (response) => {
             console.log(response.data);
             window.location.reload(false);  
+        }).catch((error)=>{
+            console.log(error)
         });
     }
 
@@ -101,9 +104,12 @@ class Appartements extends React.Component {
         event.preventDefault();
         const json = JSON.stringify(this.state.AddApartment);
         console.log(json);
-        axios.post("https://app-booking-christ.herokuapp.com/api/apartment",this.state.AddApartment).then( (response) => {
+        axios.post("https://app-booking-christ.herokuapp.com/api/apartment",this.state.AddApartment)
+        .then( (response) => {
             console.log(response.data);
             window.location.reload(false);  
+        }).catch((error)=>{
+            console.log(error)
         });
     }
 
@@ -125,16 +131,22 @@ class Appartements extends React.Component {
 
     componentDidMount() {
         //Display all api apartments
-        ApptServices.getAppartements().then( (response) => {
+        ApptServices.getAppartements()
+        .then( (response) => {
             this.setState( { apartments: response.data.apartments } )
+        }).catch((error)=>{
+            console.log(error)
         });
 
     }
 
     //Display current apartment details
     getApartment(id) {
-        ApptServices.getCurrentApartmentDetail(id).then( (response) => {
+        ApptServices.getCurrentApartmentDetail(id)
+        .then( (response) => {
             this.setState({currentApartment : this.state.apartments.filter(item => item.id==id)[0]})
+        }).catch((error)=>{
+            console.log(error)
         });
     }
 
@@ -145,9 +157,9 @@ class Appartements extends React.Component {
 
         <Navbar />
 
-        <h1 className = "text-center"> APARTMENTS LIST </h1>
+        <h1 className = "text-center" data-test="title"> APARTMENTS LIST </h1>
 
-        <button type="button" className="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Apartment</button>
+        <button type="button" data-test="button-displayed" className="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" data-test2="display-modal">Add Apartment</button>
             
             {/* Add apartment modal */}
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -155,7 +167,7 @@ class Appartements extends React.Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLabel">Add new Apartment</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" data-test="close-modal">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -213,14 +225,14 @@ class Appartements extends React.Component {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button type="button" className="btn btn-block btn-primary" onClick={this.addRow} >Add Room</button>
+                                                    <button type="button" className="btn btn-block btn-primary" data-test="add-room" onClick={this.addRow}>Add Room</button>
                                                 </td>
                                             </tr>)}
                                         </tbody>
                                     </table>
                                 </label>
                                 <div className="form-item">
-                                    <button type="submit" className="btn btn-block btn-primary">
+                                    <button type="submit" className="btn btn-block btn-primary" data-test="add-apartment">
                                         Add Apartment
                                     </button>
                                 </div>
@@ -233,7 +245,7 @@ class Appartements extends React.Component {
         <hr></hr>
 
         {/* retrieved data from api*/}
-        <table className = "table table-striped">
+        <table className = "table table-striped" data-test="data-table">
             <thead>
                 <tr>
                     <td> Apartment Id </td>
@@ -251,8 +263,8 @@ class Appartements extends React.Component {
                         <td> {apartment.id} </td>
                         <td> {apartment.number} </td>
                         <td> {apartment.name} </td>
-                        <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>this.getApartment(apartment.id)}>See</button></td>
-                        <td><button type="button" className="btn btn-success" data-toggle="modal" data-target="#addRoom" data-whatever="@mdo" onClick={()=>this.addRoomToAppt(apartment.id)}>Add Room</button></td>
+                        <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" data-test="see-details" onClick={()=>this.getApartment(apartment.id)}>See</button></td>
+                        <td><button type="button" className="btn btn-success" data-toggle="modal" data-target="#addRoom" data-whatever="@mdo" onClick={()=>this.addRoomToAppt(apartment.id)} data-test="add-new-room-modal">Add Room</button></td>
                     <div className="modal fade" id="addRoom" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
@@ -293,7 +305,7 @@ class Appartements extends React.Component {
                                     </table>
                                     </label>
                                     <div className="form-item">
-                                        <button type="submit" className="btn btn-block btn-primary" onClick={this.addRow} >
+                                        <button type="submit" className="btn btn-block btn-primary" data-test="room-added" onClick={this.addRow}>
                                             Add Room
                                         </button>
                                     </div>

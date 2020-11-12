@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from '../Navbar';
 import BookingServices from '../Services/BookingServices';
-import axios from 'axios';
 
 class Booking extends React.Component {
 
@@ -23,15 +22,21 @@ class Booking extends React.Component {
 
     componentDidMount() {
         //Get api bookings
-        BookingServices.getBookings().then( (response) => {
+        BookingServices.getBookings()
+        .then( (response) => {
             this.setState( { bookings: response.data.bookings } )
+        }).catch((error)=>{
+            console.log(error)
         });
     }
     
     //See current booking details
     getBooking(id) {
-        BookingServices.getCurrentBookingDetail(id).then( (response) => {
+        BookingServices.getCurrentBookingDetail(id)
+        .then( (response) => {
             this.setState({currentBooking : response.data.booking})
+        }).catch((error)=>{
+            console.log(error)
         });
     }
 
@@ -39,11 +44,11 @@ class Booking extends React.Component {
     return (
         <>
         <Navbar />
-            <h1 className = "text-center" > BOOKINGS LIST </h1>
+            <h1 className = "text-center" data-test="title"> BOOKINGS LIST </h1>
         
             <hr></hr>
 
-                <table className = "table table-striped">
+                <table className = "table table-striped" data-test="data-table">
                     <thead>
                         <tr>
                             <td> Booking Id </td>
@@ -64,7 +69,7 @@ class Booking extends React.Component {
                                     <td> {booking.client.lastName} </td>
                                     <td> {booking.createdAt} </td>
                                     <td> {booking.updatedAt} </td>
-                                    <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>this.getBooking(booking.id)}>See</button></td>
+                                    <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" data-test="see-details" onClick={()=>this.getBooking(booking.id)}>See</button></td>
                                 </tr>
                             )
                         }

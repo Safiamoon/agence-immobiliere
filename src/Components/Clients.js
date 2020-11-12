@@ -52,25 +52,33 @@ class Appartements extends React.Component {
         event.preventDefault();
         const json = JSON.stringify(this.state.addClient);
         console.log(json);
-        axios.post("https://app-booking-christ.herokuapp.com/api/client",this.state.addClient).then( (response) => {
+        axios.post("https://app-booking-christ.herokuapp.com/api/client",this.state.addClient)
+        .then( (response) => {
             console.log(response.data);
             window.location.reload(false);   
-            // <Redirect to ={this.state.redirect}></Redirect>
+        }).catch((error)=>{
+            console.log(error)
         });
     }
 
     componentDidMount() {
         //Get api clients
-        ClientServices.getClients().then( (response) => {
+        ClientServices.getClients()
+        .then( (response) => {
             this.setState( { clients: response.data.clients } )
+        }).catch((error)=>{
+            console.log(error)
         });
 
     }
 
     //See current client details
     getClient(id) {
-        ClientServices.getCurrentClientDetail(id).then( (response) => {
+        ClientServices.getCurrentClientDetail(id)
+        .then( (response) => {
             this.setState({currentClient : response.data.client});
+        }).catch((error)=>{
+            console.log(error)
         });
     }
 
@@ -80,15 +88,15 @@ class Appartements extends React.Component {
     return (
         <>
         <Navbar />
-        <h1 className = "text-center" > CLIENTS LIST </h1>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Client</button>
+        <h1 className = "text-center" data-test="title"> CLIENTS LIST </h1>
+        <button type="button" class="btn btn-success" data-test="button-displayed" data-test2="display-modal" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Client</button>
         {/* Add client modal */}
         <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">
                     <h5 className="modal-title" id="exampleModalLabel">Add Client</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" data-test="close-modal" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -135,7 +143,7 @@ class Appartements extends React.Component {
                             </div>
                         </label>
                         <div className="form-item">
-                            <button type="submit" className="btn btn-block btn-primary">
+                            <button type="submit" data-test="add-client" className="btn btn-block btn-primary">
                                 Add Client
                             </button>
                         </div>
@@ -147,7 +155,7 @@ class Appartements extends React.Component {
 
         <hr></hr>
 
-                <table className = "table table-striped">
+                <table className = "table table-striped" data-test="data-table">
                     <thead>
                         <tr>
                             <td> Client Id </td>
@@ -170,7 +178,7 @@ class Appartements extends React.Component {
                                     <td> {client.phone} </td>
                                     <td> {client.nationality} </td>
                                     <td> {client.birthDate} </td>
-                                    <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" onClick={()=>this.getClient(client.id)}>See</button></td>
+                                    <td><button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" data-test="see-details" onClick={()=>this.getClient(client.id)}>See</button></td>
                                 </tr>
                             )
                         }
