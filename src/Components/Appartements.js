@@ -73,7 +73,7 @@ class Appartements extends React.Component {
         axios.post("https://app-booking-christ.herokuapp.com/api/room",this.state.apartmentRoom)
         .then( (response) => {
             console.log(response.data);
-            window.location.reload(false);  
+            window.location.reload(true);  
         }).catch((error)=>{
             console.log(error)
         });
@@ -107,7 +107,7 @@ class Appartements extends React.Component {
         axios.post("https://app-booking-christ.herokuapp.com/api/apartment",this.state.AddApartment)
         .then( (response) => {
             console.log(response.data);
-            window.location.reload(false);  
+            window.location.reload(true);  
         }).catch((error)=>{
             console.log(error)
         });
@@ -143,7 +143,7 @@ class Appartements extends React.Component {
     //Display current apartment details
     getApartment(id) {
         ApptServices.getCurrentApartmentDetail(id)
-        .then( (response) => {
+        .then( () => {
             this.setState({currentApartment : this.state.apartments.filter(item => item.id==id)[0]})
         }).catch((error)=>{
             console.log(error)
