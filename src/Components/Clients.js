@@ -17,7 +17,6 @@ class Appartements extends React.Component {
                     birthDate : "",
                     nationality : "",
                     bookings : []
-                
             },
 
             addClient: {
