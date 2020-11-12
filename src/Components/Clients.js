@@ -54,7 +54,7 @@ class Appartements extends React.Component {
         axios.post("https://app-booking-christ.herokuapp.com/api/client",this.state.addClient)
         .then( (response) => {
             console.log(response.data);
-            this.props.history.push('/')    
+            this.props.history.push('/clients')    
         }).catch((error)=>{
             console.log(error)
         });
