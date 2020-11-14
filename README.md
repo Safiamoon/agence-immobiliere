@@ -2,6 +2,19 @@
 
 👉 [Click here to visit application](https://5fad9bebe45a6894de77dba4--awesome-davinci-1bb5dc.netlify.app/) 
 
+Le but de l'application est :
+
+- 🏠 Une liste des appartements
+- 🏠 Une page de création d'un appartement
+- 🏠 Une page de détails d'un appartement avec ses chambres
+- 🛏️ Une liste de chambres par appartement
+- 🛏️ Une page de création d'une chambre d'un appartement
+- 👤 Une liste de clients
+- 👤 Une page de création de client
+- 👤 Une page de détails de client
+- 🏠 Une liste de réservations
+- 🏠 Une page de détails d'une réservation
+
 ## How to run
 
 1. Clone the project from git.
@@ -25,7 +38,7 @@ Application will start at http://localhost:3000.
 
 ## API : 
 
-- Booking API
+- Booking API by Christ
 
 ## End to end testing : 
 
