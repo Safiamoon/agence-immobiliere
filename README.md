@@ -1,6 +1,11 @@
 # REACT CRUD APPLICATION
 
+This app is developed for a technical test using React & a consumption of an api.
+
+
 👉 [Click here to visit application](https://5fad9bebe45a6894de77dba4--awesome-davinci-1bb5dc.netlify.app/) 
+
+## Instructions 
 
 Le but de l'application est :
 
